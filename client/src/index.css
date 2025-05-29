@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .text-shiny-gold {
+        background: linear-gradient(90deg, #FFD700, #fff8dc, #FFD700);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+        animation: shine 2s infinite linear;
+    }
+    @keyframes shine{
+        0% {
+            background-position: -200%;
+        }
+        100% {
+            background-position: 200%
+        }
+    }
+}
+
+@layer base {
+  a {
+    @apply text-gold hover:text-light-gold no-underline;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-gold;
+  }
+  
+}
