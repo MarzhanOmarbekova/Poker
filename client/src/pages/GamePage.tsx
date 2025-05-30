@@ -44,9 +44,6 @@ export default function GamePage() {
 
   return (
     <div className="min-h-screen bg-cover bg-center  bg-table">
-      <div style={{ color: "red" }}>
-        PokerClient mount test: matchID = {matchID}, playerID = {playerID}, credentials={credentials}
-      </div>
       <PokerClient matchID={matchID} playerID={playerID} credentials={credentials} />
     </div>
   );
