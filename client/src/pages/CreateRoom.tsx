@@ -7,7 +7,7 @@ export default function CreateRoom() {
         const res = await fetch('http://localhost:8000/games/poker/create', {
             method: 'POST',
             headers: {'Content-Type': 'application/json' },
-            body: JSON.stringify({ numPlayers: 4 }),
+            body: JSON.stringify({ numPlayers: 9 }),
         });
 
         const data = await res.json();

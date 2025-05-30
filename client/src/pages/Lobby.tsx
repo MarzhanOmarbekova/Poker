@@ -12,10 +12,10 @@ export default function Lobby() {
   const playerName = localStorage.getItem("playerName") || "";
 
   const [playerID, setPlayerID] = useState<string | null>(null);
-  const [players, setPlayers] = useState< {name?: string}[]>([]);
+  const [players, setPlayers] = useState< {name?: string, data?: any}[]>([]);
   const [joined, setJoined] = useState(false);
+  const [credentials, setCredentials] = useState<string>("");
 
-// Join room and update metadata
   useEffect(() => {
     if (!playerName) {
       alert("Go to home and enter your name!");
@@ -28,9 +28,8 @@ export default function Lobby() {
     let alreadyJoined = false;
 
      async function join() {
-      // Получить метаданные матча
       const match = await lobbyClient.getMatch('poker', matchID!);
-      // Найти слот для себя
+   
       let idx = match.players.findIndex(p => p.name === playerName);
       if (idx === -1) {
         idx = match.players.findIndex(p => !p.name);
@@ -42,10 +41,15 @@ export default function Lobby() {
         return;
       }
       if (!alreadyJoined) {
-        await lobbyClient.joinMatch('poker', matchID!, {
+        const joinRes = await lobbyClient.joinMatch('poker', matchID!, {
           playerID: String(idx),
           playerName,
         });
+        setCredentials(joinRes.playerCredentials);
+        localStorage.setItem(`poker_${matchID}_credentials_${idx}`, joinRes.playerCredentials);
+      } else {
+        const stored = localStorage.getItem(`poker_${matchID}_credentials_${idx}`);
+        if(stored) setCredentials(stored);
       }
       setPlayerID(String(idx));
       setJoined(true);
@@ -54,7 +58,6 @@ export default function Lobby() {
     join();
   }, [matchID, playerName, navigate]);
 
- // 2. Подписка на мгновенные обновления игроков через LobbyClient
   useEffect(() => {
     if (!matchID) return;
     let mounted = true;
@@ -66,8 +69,6 @@ export default function Lobby() {
 
     updatePlayers();
 
-    // Реалтайм: подписки нет, но можно делать очень частые запросы (100-500мс)
-    // Для MVP: setInterval — ок, потому что LobbyClient отдаёт только метаданные
     const int = setInterval(updatePlayers, 500);
 
     return () => {
@@ -75,6 +76,17 @@ export default function Lobby() {
       clearInterval(int);
     };
   }, [matchID, joined]);
+
+  const setReady = async () => {
+    await lobbyClient.updatePlayer('poker', matchID!, {
+      playerID: playerID!,
+      credentials,
+      newName: playerName,
+      data: {ready: true}
+    });
+  };
+
+  const allReady = players.filter(p => p.name).length > 1 && players.filter(p => p.name).every(p => p.data?.ready);;
 
   if (!playerID ) {
     return <div className="text-black p-4">Joining the room...</div>;
@@ -88,7 +100,7 @@ export default function Lobby() {
       </div>
 
       <div className="grid grid-cols-2 gap-6 mb-10">
-        {players.map((player, index) => (
+        {players.filter(p => p.name).map((player, index) => (
             <div
             key={index}
             className={`rounded-xl bg-velv border-2 p-4 text-center shadow-gold ${
@@ -98,24 +110,37 @@ export default function Lobby() {
             <p className="text-lg font-bold">
                 {player.name || `Waiting for Player ${index}`}
             </p>
-            <p className="text-sm">{player.name ? 'Ready' : 'Waiting...'}</p>
+            <p className="text-sm">
+              {player.data?.ready ? 'Ready' : 'Not Ready'}
+            </p>
+            {player.name === playerName && !player.data?.ready &&
+              <button className='border-2' onClick={setReady}>I'm Ready</button>
+            }
+
             </div>
         ))}
         </div>
 
       <PokerClient matchID={matchID} playerID={playerID} />
         
-        {playerID === "0" && (
-            <button
-                onClick={() => {
-                // Пока просто reload страницы или лог
-                console.log("Game started!");
-                }}
-                className="px-6 py-3 bg-gold text-black rounded-xl shadow-lg hover:bg-yellow-300 transition"
-            >
-                🚀 Start Game
-            </button>
-            )}
+      {playerID === "0" && !allReady && (
+        <button
+        onClick={() => {
+          window.location.href = `/game/${matchID}`;
+        }}
+        className=" px-6 py-3 bg-gold text-black rounded-xl shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+      disabled>
+          🚀 Start Game
+      </button>
+      )}
+
+      {playerID === "0" && allReady && (
+        <button
+          className="px-6 py-3 bg-gold text-black rounded-xl shadow-lg hover:bg-yellow-300 transition"
+        >
+          🚀 Start Game
+        </button>
+      )}
 
     </div>
   );

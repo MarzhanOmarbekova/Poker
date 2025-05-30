@@ -37,3 +37,18 @@
 //         </div>
 //     )
 // }
+
+import React from 'react';
+import type { BoardProps } from 'boardgame.io/react';
+import type { Player, PokerGameState} from '../../../server/game';
+
+export const PokerBoard: React.FC<BoardProps<PokerGameState>> = ({ G }) => (
+  <div>
+    <h2>Игроки:</h2>
+    <ul>
+      {G.players.map((player: Player) => (
+        <li key={player.id}>{player.name ?? player.id}</li>
+      ))}
+    </ul>
+  </div>
+);
