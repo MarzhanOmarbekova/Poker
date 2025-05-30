@@ -24,12 +24,11 @@ export default function Home(){
     }
 
     const handleJoinRoom = () => {
-        new Audio ('/join.flac').play().catch(() => {});
         navigate('/join');
     }
 
     return (
-        <div className="min-h-screen bg-mainbg bg-cover flex flex-col items-center justify-center h-[80vh] text-gold">
+        <div className="min-h-screen bg-mainbg bg-cover bg-center flex flex-col items-center justify-center h-[80vh] text-gold">
             <h1 className="text-5xl  font-bold drop-shadow-gold">Welcome to Poker Royale</h1>
             <p className="text-2xl mt-6 font-semibold">Start playing with friends right now</p>
             

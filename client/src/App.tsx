@@ -4,6 +4,7 @@ import Rules from './pages/Rules'
 import Lobby from './pages/Lobby'
 import Navbar from './components/Navbar'
 import JoinRoom from './pages/JoinRoom'
+import GamePage from './pages/GamePage'
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path='/rules' element={<Rules />} />
         <Route path='/lobby/:id' element={<Lobby />} />
         <Route path='/join' element={<JoinRoom />} />
+        <Route path="/game/:id" element={<GamePage />} />
       </Routes>
     </div>
   )

@@ -29,6 +29,7 @@ export default {
       backgroundImage: {
         'mainbg': "url('/cs.png')",
         'velv': "url('/velv.jpg')",
+        'table': "url('/table.jpg')",
         'wood': "url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d3ac3ddb-903e-427e-8991-85b788462020/dc36576-a751b025-1e75-4563-a004-49da300ef8ab.jpg/v1/fill/w_1600,h_800,q_75,strp/digital_dark_wood_texture_1__12__by_duzulek_dc36576-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9ODAwIiwicGF0aCI6IlwvZlwvZDNhYzNkZGItOTAzZS00MjdlLTg5OTEtODViNzg4NDYyMDIwXC9kYzM2NTc2LWE3NTFiMDI1LTFlNzUtNDU2My1hMDA0LTQ5ZGEzMDBlZjhhYi5qcGciLCJ3aWR0aCI6Ijw9MTYwMCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.niFDBmwOVEW5Sb5ckRimSiRn0_felvsLz11Q9EZXZgU')",
         'luxury': "url('https://expatnights.com/uae/wp-content/uploads/2022/02/DARK-ROOM-DUBAI.jpg')"
       },

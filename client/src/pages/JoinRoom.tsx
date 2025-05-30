@@ -8,6 +8,7 @@ export default function JoinRoom() {
   const handleSubmit = () => {
     if (!roomId) return;
     navigate(`/lobby/${roomId}`);
+    new Audio ('/join.flac').play().catch(() => {});
   };
 
   return (

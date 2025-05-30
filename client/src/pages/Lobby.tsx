@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import PokerClient from './PokerClient';
 import { LobbyClient } from 'boardgame.io/client';
 
 const lobbyClient = new LobbyClient({ server: 'http://localhost:8000' });
@@ -25,21 +24,29 @@ export default function Lobby() {
 
     if(!matchID) return;
 
-    let alreadyJoined = false;
 
      async function join() {
       const match = await lobbyClient.getMatch('poker', matchID!);
-   
       let idx = match.players.findIndex(p => p.name === playerName);
+      
+      let alreadyJoined = idx !== -1
+
       if (idx === -1) {
         idx = match.players.findIndex(p => !p.name);
-      } else {
-        alreadyJoined = true;
-      }
+      } 
       if (idx === -1) {
         alert('Room is full!');
         return;
       }
+      setPlayerID(String(idx));
+
+    // Пробуем credentials из localStorage
+    const storedCreds = localStorage.getItem(`poker_${matchID}_credentials_${idx}`);
+    if (alreadyJoined && storedCreds) {
+      setCredentials(storedCreds);
+      setJoined(true);
+      return;
+    }
       if (!alreadyJoined) {
         const joinRes = await lobbyClient.joinMatch('poker', matchID!, {
           playerID: String(idx),
@@ -47,13 +54,12 @@ export default function Lobby() {
         });
         setCredentials(joinRes.playerCredentials);
         localStorage.setItem(`poker_${matchID}_credentials_${idx}`, joinRes.playerCredentials);
-      } else {
-        const stored = localStorage.getItem(`poker_${matchID}_credentials_${idx}`);
-        if(stored) setCredentials(stored);
-      }
-      setPlayerID(String(idx));
-      setJoined(true);
+        setJoined(true);
+    } else {
+      // Игрок уже в матче, но credentials нет (например, с другого браузера)
+      alert('You are already in the room. Try another name or clear your storage.');
     }
+  }
 
     join();
   }, [matchID, playerName, navigate]);
@@ -120,8 +126,6 @@ export default function Lobby() {
             </div>
         ))}
         </div>
-
-      <PokerClient matchID={matchID} playerID={playerID} />
         
       {playerID === "0" && !allReady && (
         <button
@@ -137,6 +141,10 @@ export default function Lobby() {
       {playerID === "0" && allReady && (
         <button
           className="px-6 py-3 bg-gold text-black rounded-xl shadow-lg hover:bg-yellow-300 transition"
+          onClick={async () => {
+            new Audio ('/join.flac').play().catch(() => {});
+            navigate(`/game/${matchID}`);
+          }}
         >
           🚀 Start Game
         </button>
