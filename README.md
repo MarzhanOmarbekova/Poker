@@ -74,32 +74,37 @@ The client runs (by default) on `http://localhost:5173` or `http://localhost:300
 ## Unique Approaches & Methodologies
 
 - **Custom Theming**: Rich gold/velvet/wood backgrounds and Google Fonts create a casino-like, premium feel.
+- **Modular Architecture**: Separation of concerns between client and server for better maintainability.
 - **Minimal Onboarding**: Players can join and play with almost no friction—just pick a name and join a room.
+- **Real-time Communication**: Utilization of boardgame.io's built-in WebSocket support to handle real-time interactions.
 
 ---
 
 ## Trade-offs
 
-- **No Authentication**: There’s no persistent user authentication; name is stored in local storage only, which is insecure for production.
+- **boardgame.io vs. Custom Implementation**: Chose boardgame.io for its robust game state management and real-time capabilities, which accelerates development but may introduce a learning curve.
 - **Room Size Fixed**: The number of players per room is currently fixed and not user-configurable.
 - **No Server Deployment Scripts**: The setup is local-only, and not ready for cloud deployment out-of-the-box.
+- **Vite over Create React App**: Selected Vite for its faster build times and modern tooling support, which may require additional configuration for some libraries.
 
 
 ## Known Issues
 
-- **No Production Deployment**: The application is intended for local use and not yet setup for public hosting.
-- **No Bot Players**: Only human players are supported.
-- **No Error Handling for Network Failures**: Unreliable network connections may cause players to be dropped from rooms.
+- **Mobile Optimization**: While the UI is responsive, further testing is needed to ensure optimal performance on all devices.
+- **Incomplete Game Logic**: The full poker game mechanics are still under development.
+- **No Error Handling for Network Failures**:  Limited error handling for network failures and unexpected user actions.
 
 ---
 
 ## Tech Stack & Rationale
 
-- **TypeScript & React**: For robust, type-safe frontend development and rapid UI iteration.
-- **Vite**: Fast frontend build tool and dev server.
-- **Tailwind CSS**: Utility-first CSS for rapid, themeable design.
-- **boardgame.io**: Simplifies multiplayer game logic and synchronization.
-- **Node.js (Backend)**: Familiar, fast setup for prototyping real-time APIs.
+- **React & TypeScript**: Provides a robust framework for building scalable and maintainable user interfaces with type safety.
+
+- **Vite**: Offers a fast and modern development environment with minimal configuration.
+
+- **Tailwind CSS**: Enables rapid UI development with a utility-first approach, ensuring design consistency.
+
+- **boardgame.io**: Simplifies the implementation of multiplayer game logic and real-time communication.
 
 This stack was chosen for its speed of development, strong TypeScript support, and suitability for real-time browser games.
 
