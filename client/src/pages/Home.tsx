@@ -16,6 +16,7 @@ export default function Home(){
     }, []);
 
     const askForName = () => {
+        new Audio ('/dialog(pop-up).flac').play().catch(() => {});
         const name = prompt("Enter your name:");
         if (name && name.trim().length > 0) {
             localStorage.setItem("playerName", name);

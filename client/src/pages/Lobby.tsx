@@ -142,7 +142,7 @@ export default function Lobby() {
         <button
           className="px-6 py-3 bg-gold text-black rounded-xl shadow-lg hover:bg-yellow-300 transition"
           onClick={async () => {
-            new Audio ('/join.flac').play().catch(() => {});
+            new Audio ('/open.flac').play().catch(() => {});
             navigate(`/game/${matchID}`);
           }}
         >
